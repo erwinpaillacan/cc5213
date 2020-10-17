@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 import os
 import numpy
@@ -32,7 +33,7 @@ if not os.path.isdir(videos_dir):
 #descriptores_dir =sys.argv[2]
 
 
-def generar_descriptores(folder_video, dir_salida, frames_por_segundo= 1):
+def generar_descriptores(folder_video, dir_salida, frames_por_segundo):
     '''
     Utilidad para cargar imagenes de una carpeta, calcular
     su descriptor y guardarlo. Tambien se escribe un .txt con
@@ -76,7 +77,8 @@ def generar_descriptores(folder_video, dir_salida, frames_por_segundo= 1):
             if (ret != True):
                 break
             if (frameId % math.floor(frameRate /frames_por_segundo) == 0):
-                time = frameId / math.floor(frameRate / frames_por_segundo)
+                time = frameId / frameRate
+                time = "{0:.3f}".format(time)
                 text_file.write(video+'\t' + str(time) + '\n')
                 img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 img =  cv2.resize(img, (10, 10))
@@ -100,7 +102,7 @@ def generar_descriptores(folder_video, dir_salida, frames_por_segundo= 1):
 
 
 
-generar_descriptores(videos_dir, descriptores_dir, frames_por_segundo= 1)
+generar_descriptores(videos_dir, descriptores_dir, frames_por_segundo= 4)
 
 #frames_1 = extractFrames(videos_dir, list_videos[0])
 #print(frames_1)

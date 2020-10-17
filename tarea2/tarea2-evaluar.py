@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 import os.path
 import subprocess
@@ -232,8 +233,8 @@ class Evaluacion:
             print("==> Bonus = {:.1f} puntos para otra tarea o mini-control".format(bonus))
 
         if m.total_gt == 0 and len(self.resultado_por_deteccion) > 0:
-            print()
-            print("¿archivo GT incorrecto?")
+            print('')
+            print("archivo GT incorrecto")
             return
 
 
@@ -288,7 +289,7 @@ def ejecutar_comandos(videos_comerciales, videos_television, work_dir):
 
 # inicio
 if len(sys.argv) < 3:
-    print("CC5213 - Evaluación Tarea 2  (2020-2)")
+    print("CC5213 - Evaluacion Tarea 2  (2020-2)")
     print("Uso: {} [dataset_dir] [work_dir]".format(sys.argv[0]))
     sys.exit(1)
 
@@ -297,7 +298,12 @@ work_dir = sys.argv[2]
 
 comerciales = "{}/comerciales".format(dataset_dir)
 television = "{}/television".format(dataset_dir)
+filename_gt = "{}/gt.txt".format(dataset_dir)
+
+if not os.path.isdir(comerciales) or not os.path.isdir(television) or not os.path.isfile(filename_gt):
+    print("ruta {} no es válida".format(dataset_dir))
+    sys.exit(1)
+
 filename_detecciones = ejecutar_comandos(comerciales, television, work_dir)
 
-filename_gt = "{}/gt.txt".format(dataset_dir)
 evaluar_resultados(filename_detecciones, filename_gt)

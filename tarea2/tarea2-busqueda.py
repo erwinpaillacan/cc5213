@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 import os
 import numpy
@@ -94,8 +95,8 @@ def escribir_linea(linea_tv, linea_comercial, minimo, text_file):
     file: text_file
     
     '''
-    text = linea_tv+'\t'+str(minimo) + '\t' +  linea_comercial
-    print(text.replace('\n', ''))
+    text = linea_tv+'\t'+  linea_comercial + '\t'+ str(minimo) 
+    #print(text.replace('\n', ''))
     text_file.write(text.replace('\n', '') + '\n' )
  
  
@@ -140,7 +141,7 @@ def busqueda(folder_tv, folder_comerciales, similares_file):
         #recorrer cada descriptor del video en particular
         for i in range(len(info_descriptor)):
             d = descriptor[i,:]
-            minimo_global = 1000
+            minimo_global = 100000000000000
             linea = ''
             for comercial in comerciales:
                 descriptor_comer = np.fromfile(os.path.join(folder_comerciales, comercial))
