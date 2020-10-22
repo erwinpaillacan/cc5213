@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys
 import os.path
+from tqdm import tqdm
+
 
 if len(sys.argv) < 3:
     print("Uso: {} [similares_file] [detecciones_file]".format(sys.argv[0]))
@@ -23,8 +25,9 @@ def buscar_vecinos(similares_file,detecciones_file , k_vecinos ):
     text_file = open(detecciones_file, "w")
     contador = 0
     linea_vecinos = []
+    umbral = 0
     desde = 0
-    for linea in similares_txt[1:]:
+    for linea in tqdm(similares_txt[1:]):
         tv_name, tv_tiempo, comercial_name, comercial_tiempo, dis= linea.split('\t')
         if tv_name == tv_name_i and comercial_name== comercial_name_i and comercial_tiempo_i< comercial_tiempo:
             if contador == 0:
@@ -33,18 +36,22 @@ def buscar_vecinos(similares_file,detecciones_file , k_vecinos ):
             largo = "{0:.2f}".format(float(tv_tiempo) - float(desde) )
             linea_vecinos.append(tv_name +'\t'+ str(desde) + '\t' + str(largo) + '\t'+ comercial_name + '\t' + dis)
             contador += 1
+            umbral = 0
         else:        
-
-            if contador> k_vecinos:
+            umbral +=1
+            if contador> k_vecinos and umbral > 2:
                 text_file.write(linea_vecinos[-1] + '\n')
-                #print(linea_vecinos)                
-            contador = 0
-            linea_vecinos = []
+                #print(linea_vecinos)
+                #                
+            if umbral > 2:
+                contador = 0
+                linea_vecinos = []
+                umbral = 0
             comercial_tiempo_i = comercial_tiempo
             tv_name_i = tv_name
             comercial_name_i = comercial_name
     text_file.close()
 
 
-buscar_vecinos(similares_file,  detecciones_file, k_vecinos=10)
+buscar_vecinos(similares_file,  detecciones_file, k_vecinos=16)
 # python tarea2-deteccion.py work_a/similares.txt work_a/detecciones.txt

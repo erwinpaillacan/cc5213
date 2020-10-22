@@ -261,9 +261,9 @@ def ejecutar_comandos(videos_comerciales, videos_television, work_dir):
     file_detecciones = "{}/detecciones.txt".format(work_dir)
     comandos = []
     # tareas en python
-    comandos.append(["python", "tarea2-descriptores.py", videos_television, descriptores_television])
-    comandos.append(["python", "tarea2-descriptores.py", videos_comerciales, descriptores_comerciales])
-    comandos.append(["python", "tarea2-busqueda.py", descriptores_television, descriptores_comerciales, file_similares])
+    #comandos.append(["python", "tarea2-descriptores.py", videos_television, descriptores_television])
+    #comandos.append(["python", "tarea2-descriptores.py", videos_comerciales, descriptores_comerciales])
+    #comandos.append(["python", "tarea2-busqueda.py", descriptores_television, descriptores_comerciales, file_similares])
     comandos.append(["python", "tarea2-deteccion.py", file_similares, file_detecciones])
     # tareas en c++
     # comandos.append(["./tarea2-descriptores.py", videos_television, descriptores_television])

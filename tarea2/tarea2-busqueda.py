@@ -64,7 +64,9 @@ def calcular_distancia(vector, matrix, metric = 'euclidean'):
     float: minimo
         Distancia minima
     '''
-    vector = vector.reshape(1,100)
+    largo_descriptor = 400
+    #largo_descriptor= 256
+    vector = vector.reshape(1,largo_descriptor)
     dis = distance.cdist(vector, matrix, metric)
     minimo = np.amin(dis)
     index_tupla = np.where(dis == np.amin(dis))
@@ -124,9 +126,9 @@ def busqueda(folder_tv, folder_comerciales, similares_file):
     '''
     comerciales = [name for name in os.listdir(folder_comerciales) if name.endswith('.txt') == False]
     video_tv = [name for name in os.listdir(folder_tv) if name.endswith('.txt') ==False]
-    print(video_tv)
-
-
+    #print(video_tv)
+    #length = len(video_tv) * len()
+    #pbar = tqdm(total=length)
     text_file = open(similares_file, "w")
     for tv in video_tv:
         #print(name)
@@ -134,12 +136,12 @@ def busqueda(folder_tv, folder_comerciales, similares_file):
         #print(descriptor.shape)
         file = open(os.path.join(folder_tv, tv + '.txt'))
         info_descriptor = file.readlines()
-        print(info_descriptor[1])
+        #print(info_descriptor[1])
         #print(len(info_descriptor))
         descriptor = descriptor.reshape(len(info_descriptor), int(len(descriptor) /len(info_descriptor) ))
         #print(descriptor.shape)
         #recorrer cada descriptor del video en particular
-        for i in range(len(info_descriptor)):
+        for i in tqdm(range(len(info_descriptor))):
             d = descriptor[i,:]
             minimo_global = 100000000000000
             linea = ''

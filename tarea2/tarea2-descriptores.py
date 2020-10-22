@@ -55,21 +55,26 @@ def generar_descriptores(folder_video, dir_salida, frames_por_segundo):
         calculó sus descriptor
 
     '''
-    print('Extraer ' + str(frames_por_segundo) + ' frame por cada segundo')
+    #print('Extraer ' + str(frames_por_segundo) + ' frame por cada segundo')
     nombre_videos = os.listdir(videos_dir)
     nombre_videos = [name for name in nombre_videos if name.endswith('.mp4')]
     if not os.path.exists(dir_salida):
         os.makedirs(dir_salida)
 
-
+    largo_descriptor = 400
+    #largo_descriptor = 256
+    
     
     for video in nombre_videos:
         name = video.split('.')[0]
         text_file = open(dir_salida+'/' + name+ ".txt", "w")
-        vectors = np.empty((1, 100))
+        vectors = np.empty((1, largo_descriptor))
         contador = 0
         cap = cv2.VideoCapture(os.path.join(videos_dir, video))
         frameRate = cap.get(5) #frame rate
+        property_id = int(cv2.CAP_PROP_FRAME_COUNT) 
+        length = int(cv2.VideoCapture.get(cap, property_id))
+        pbar = tqdm(total=length)
         #print(frameRate)
         while(cap.isOpened()):
             frameId = cap.get(1) #current frame number
@@ -81,28 +86,30 @@ def generar_descriptores(folder_video, dir_salida, frames_por_segundo):
                 time = "{0:.3f}".format(time)
                 text_file.write(video+'\t' + str(time) + '\n')
                 img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                img =  cv2.resize(img, (10, 10))
+                dim = int(math.sqrt( largo_descriptor ))
+                img =  cv2.resize(img, (dim, dim))
                 data = np.array(img)
-                flattened = data.reshape((1, 100))
+                flattened = data.reshape((1, largo_descriptor))
                 vectors = np.concatenate((vectors,flattened), axis = 0)
                 contador += 1
                 #print(vectors.shape)
             
-                
+            pbar.update(1)
             if cv2.waitKey(10) & 0xFF == ord('q') :
 
                     # break out of the while loop
                     break
         cap.release()
-        print(name, contador, ' frames extraidos')
+        #print(name, contador, ' frames extraidos')
         vectors = np.delete(vectors, 0, axis=0)
-        print(vectors.shape)
+        #print(vectors.shape)
         vectors.tofile(dir_salida +'/' + name)
         text_file.close()
+        pbar.close()
 
 
-
-generar_descriptores(videos_dir, descriptores_dir, frames_por_segundo= 4)
+#3
+generar_descriptores(videos_dir, descriptores_dir, frames_por_segundo= 2)
 
 #frames_1 = extractFrames(videos_dir, list_videos[0])
 #print(frames_1)
@@ -111,6 +118,5 @@ generar_descriptores(videos_dir, descriptores_dir, frames_por_segundo= 4)
 
 
 
-#python tarea2-descriptores.py dataset_a/television work_a/descriptores_television
-#python tarea2-descriptores.py dataset_a/comerciales work_a/descriptores_comerciales
+#python tarea2-descriptores.py dataset_a/television work_a/descriptores_television && python tarea2-descriptores.py dataset_a/comerciales work_a/descriptores_comerciales
 
