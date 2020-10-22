@@ -52,6 +52,6 @@ def buscar_vecinos(similares_file,detecciones_file , k_vecinos ):
             comercial_name_i = comercial_name
     text_file.close()
 
-
-buscar_vecinos(similares_file,  detecciones_file, k_vecinos=16)
+#baseline = 16
+buscar_vecinos(similares_file,  detecciones_file, k_vecinos=15)
 # python tarea2-deteccion.py work_a/similares.txt work_a/detecciones.txt

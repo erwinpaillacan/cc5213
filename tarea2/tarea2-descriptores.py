@@ -108,8 +108,8 @@ def generar_descriptores(folder_video, dir_salida, frames_por_segundo):
         pbar.close()
 
 
-#3
-generar_descriptores(videos_dir, descriptores_dir, frames_por_segundo= 2)
+#baseline = 2
+generar_descriptores(videos_dir, descriptores_dir, frames_por_segundo= 4)
 
 #frames_1 = extractFrames(videos_dir, list_videos[0])
 #print(frames_1)
